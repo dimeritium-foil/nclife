@@ -1,11 +1,23 @@
 CC = gcc
-CFLAGS = -Wall -lncursesw 
+CFLAGS = -Wall 
+LDFLAGS = -lncursesw 
 
-FILE = $(wildcard *.c)
-OBJ = $(patsubst %.c,%, $(wildcard *.c))
+SRC_DIR = src
+VPATH = src
 
-all:
-	$(CC) $(CFLAGS) -o $(OBJ) $(FILE)
+OBJFILES = $(patsubst $(SRC_DIR)/%.c, $(SRC_DIR)/%.o, $(wildcard $(SRC_DIR)/*.c))
+TARGET = nclife
 
-run: $(OBJ)
-	./$(OBJ)
+all: $(TARGET)
+
+$(TARGET): $(OBJFILES)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $^
+
+run: $(TARGET)
+	./$(TARGET)
+
+clean:
+	rm -f $(OBJFILES)

@@ -9,7 +9,7 @@
 
 // srandom(time(NULL));
 
-int height, width;
+int height, width, real_width;
 
 void life(int grid[height][width], int new_grid[height][width]);
 
@@ -37,11 +37,13 @@ int main() {
     // enable arrow keys
     keypad(stdscr, true);
 
-    getmaxyx(stdscr, height, width);
+    getmaxyx(stdscr, height, real_width);
 
     // to account for borders
     height -= 2;
-    width -= 2;
+    real_width -= 2;
+
+    width = real_width / 2;
 
     // 2 grids to alternate between them
     int grid[height][width];
@@ -154,7 +156,7 @@ void print_grid(int grid[height][width]) {
 
     for (int row = 0; row < height; row++)
         for (int col = 0; col < width; col++)
-            mvprintw(1 + row, 1 + col, "%s", grid[row][col] ? "■" : " ");
+            mvprintw(1 + row, 1 + 2*col, "%s", grid[row][col] ? "██" : "  ");
 
     refresh();
 }
@@ -264,7 +266,7 @@ char* menu(char* options[], int options_num) {
         for (int i = 0; i < options_num; i++) {
 
             y_pos = (height / 2) + 2*i;
-            x_pos = (width - strlen(options[i])) / 2;
+            x_pos = (real_width - strlen(options[i])) / 2;
 
             // selection character
             mvaddch(y_pos, x_pos - 2, i == choice ? ACS_RARROW : ' ');
@@ -323,7 +325,7 @@ void print_greeting() {
 
     int greeting_lines = sizeof(greeting) / sizeof(greeting[0]);
 
-    int x_pos = (width - strlen(greeting[0])) / 2;
+    int x_pos = (real_width - strlen(greeting[0])) / 2;
     int y_pos = height / 4;
 
     for (int i = 0; i < greeting_lines; i++)

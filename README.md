@@ -2,7 +2,7 @@
 A Conway's Game of Life TUI implementation using ncurses.
 
 <p align="center">
-  <img src=demo.gif />
+  <img src=demo.mp4 />
 </p>
 
 **TODO:**
